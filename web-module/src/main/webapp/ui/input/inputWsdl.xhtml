@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+		<script type="text/javascript">
+			//<![CDATA[
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="title">
+        InputText
+    </ui:define>
+	<ui:define name="description">
+        Wsdl del servicio web al que se le desea realizar la generación automatica de test.
+    </ui:define>
+	<ui:define name="implementation">
+		<p:dialog modal="true" widgetVar="statusDialog" header="Status"
+			draggable="false" closable="false" resizable="false">
+			<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+		</p:dialog>
+		<h:form>
+			<p:growl id="growl" sticky="true" showDetail="true" />
+			<h:outputText value="Wsdl: *" />
+			<p:inputText size="250" value="#{inputWsdl.wsdl}" title="Wsdl" alt="Wsdl que se desea analizar"	label="Wsdl" />
+
+			<p:separator />
+			
+			<p:treeTable value="#{inputWsdl.root}" var="document">
+			<f:facet name="header">
+            Servicio Web
+            </f:facet>
+				<p:column headerText="Métodos">
+					<h:outputText value="#{document.name}" />
+				</p:column>
+				<p:column headerText="Tipo">
+					<h:outputText value="#{document.type}" />
+				</p:column>
+			</p:treeTable>
+
+           <p:separator />
+ 
+			<p:commandButton value="Analizar wsdl" action="#{inputWsdl.loadWsdl}"
+							ajax="false" />
+			<p:commandButton value="Generar Suite Test" action="#{inputWsdl.generateSuite}"
+				ajax="false" />
+			<p:separator />				
+			<p:commandButton rendered="#{inputWsdl.file != null}" value="Descargar Fuente generado" ajax="false"
+				onclick="PrimeFaces.monitorDownload(start, stop);"
+				icon="ui-icon-arrowthick-1-s">
+				<p:fileDownload value="#{inputWsdl.file}" />
+			</p:commandButton>
+		</h:form>
+	</ui:define>
+</ui:composition>
