@@ -13,7 +13,7 @@
         <module>web-module</module>
   </modules>
 
-  <name>TestGenerator</name>
+  <name>TestGenerator...</name>
   <url>http://maven.apache.org</url>
 
   <properties>
