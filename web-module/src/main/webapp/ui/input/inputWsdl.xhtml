@@ -30,12 +30,13 @@
 		<h:form>
 			<p:growl id="growl" sticky="true" showDetail="true" />
 			<h:outputText value="Wsdl: *" />
-			<p:inputText size="250" value="#{inputWsdl.wsdl}" title="Wsdl" alt="Wsdl que se desea analizar"	label="Wsdl" />
+			<p:inputText size="250" value="#{inputWsdl.wsdl}" title="Wsdl"
+				alt="Wsdl que se desea analizar" label="Wsdl" />
 
 			<p:separator />
-			
+
 			<p:treeTable value="#{inputWsdl.root}" var="document">
-			<f:facet name="header">
+				<f:facet name="header">
             Servicio Web
             </f:facet>
 				<p:column headerText="Métodos">
@@ -46,14 +47,21 @@
 				</p:column>
 			</p:treeTable>
 
-           <p:separator />
- 
+			<p:separator />
+
 			<p:commandButton value="Analizar wsdl" action="#{inputWsdl.loadWsdl}"
-							ajax="false" />
-			<p:commandButton value="Generar Suite Test" action="#{inputWsdl.generateSuite}"
 				ajax="false" />
-			<p:separator />				
-			<p:commandButton rendered="#{inputWsdl.file != null}" value="Descargar Fuente generado" ajax="false"
+			<p:commandButton disabled="#{inputWsdl.folderName == null}"
+				value="Generar Suite Test" action="#{inputWsdl.generateSuite}"
+				ajax="false" />
+			<p:separator />
+			<p:commandButton value="Ejecutar Suite Test"
+				rendered="#{inputWsdl.file != null}"
+				action="#{inputWsdl.executeSuite}" ajax="false" />
+			<p:button rendered="#{inputWsdl.rootReport != null}" target="_blank" href="#{inputWsdl.rootReport}"
+				value="Resultados" />
+			<p:commandButton rendered="#{inputWsdl.file != null}"
+				value="Descargar Fuente generado" ajax="false"
 				onclick="PrimeFaces.monitorDownload(start, stop);"
 				icon="ui-icon-arrowthick-1-s">
 				<p:fileDownload value="#{inputWsdl.file}" />

@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +33,7 @@ import es.infinitysoft.generator.test.StaticResources;
 import es.infinitysoft.generator.test.config.Config;
 import es.infinitysoft.generator.test.util.ZipUtil;
 import es.infinitysoft.generator.test.applicationService.ServiceClientGenerator;
+import es.infinitysoft.generator.test.applicationService.ServiceExecuteTestSuite;
 import es.infinitysoft.generator.test.applicationService.ServiceTestSuiteGenerator;
 
 @ManagedBean(name = "inputWsdl")
@@ -51,6 +51,12 @@ public class InputWsdlView {
 	private TreeNode root;
 
 	private Document selectedDocument;
+	
+	private String folderName = null;
+	
+	private String rootReport = null;
+	
+	
 
 	@ManagedProperty("#{methodService}")
 	private MethodService service;
@@ -84,6 +90,38 @@ public class InputWsdlView {
 	public StreamedContent getFile() {
 		return file;
 	}
+	
+	
+	
+	
+
+	/**
+	 * @return the rootReport
+	 */
+	public String getRootReport() {
+		return rootReport;
+	}
+
+	/**
+	 * @param rootReport the rootReport to set
+	 */
+	public void setRootReport(String rootReport) {
+		this.rootReport = rootReport;
+	}
+
+	/**
+	 * @return the folderName
+	 */
+	public String getFolderName() {
+		return folderName;
+	}
+
+	/**
+	 * @param folderName the folderName to set
+	 */
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
+	}
 
 	/**
 	 * 
@@ -94,7 +132,7 @@ public class InputWsdlView {
 			// Get root folder's
 			String rootFolder = Config.getInstance().getString(
 					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
-			String folderName = "/" + UUID.randomUUID().toString();
+			folderName = "/" + UUID.randomUUID().toString();
 			// Load wsdl data.
 			ServiceClientGenerator.getInstance().createClientByWsdl(wsdl,
 					rootFolder, rootFolder + folderName);
@@ -103,6 +141,7 @@ public class InputWsdlView {
 			// Load data into datatree
 			root = this.service.createDocuments(service);
 			log.info("Salida: " + folderName);
+			
 			message("Análisis terminado con éxito.");
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -118,7 +157,9 @@ public class InputWsdlView {
 			// Get root folder's
 			String rootFolder = Config.getInstance().getString(
 					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
-			String folderName = "/" + UUID.randomUUID().toString();
+			if (folderName == null || folderName.equals("")){
+			   folderName = "/" + UUID.randomUUID().toString();
+			}
 			ServiceClientGenerator.getInstance().createClientByWsdl(wsdl,
 					rootFolder, rootFolder + folderName);
 			// Load wsdl data.
@@ -142,6 +183,27 @@ public class InputWsdlView {
 					"source.zip");
 			log.info("Salida: " + folderName);
 			message("Generación terminada con éxito.");
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public void executeSuite() {
+		log.info("Start process for test suite generation.");
+		try {
+			// Get root folder's
+			String rootFolder = Config.getInstance().getString(
+					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
+			//String folderName = "/" + UUID.randomUUID().toString();
+			
+            ServiceExecuteTestSuite.getInstance().executeMvnCleanInstall(rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED);
+            
+            this.rootReport = "C:/" + rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED + "/target/site/TestSuite.html"; 
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
