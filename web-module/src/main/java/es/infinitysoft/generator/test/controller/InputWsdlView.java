@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import es.infinitysoft.generator.test.StaticResources;
 import es.infinitysoft.generator.test.config.Config;
+import es.infinitysoft.generator.test.util.FileUtil;
 import es.infinitysoft.generator.test.util.ZipUtil;
 import es.infinitysoft.generator.test.applicationService.ServiceClientGenerator;
 import es.infinitysoft.generator.test.applicationService.ServiceExecuteTestSuite;
@@ -202,7 +203,9 @@ public class InputWsdlView {
 			
             ServiceExecuteTestSuite.getInstance().executeMvnCleanInstall(rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED);
             
-            this.rootReport = "C:/" + rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED + "/target/site/TestSuite.html"; 
+            FileUtil.getInstance().copyDirectory(rootFolder + folderName, "/xampp/htdocs/" + folderName);
+            
+            this.rootReport = "http://127.0.0.1" +  folderName + StaticResources.ROOT_TEST_SUITE_GENERATED + "target/site/TestSuite.html"; 
 			
 		} catch (Exception e) {
 			log.error(e.getMessage());

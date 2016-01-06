@@ -54,18 +54,20 @@
 			<p:commandButton disabled="#{inputWsdl.folderName == null}"
 				value="Generar Suite Test" action="#{inputWsdl.generateSuite}"
 				ajax="false" />
-			<p:separator />
-			<p:commandButton value="Ejecutar Suite Test"
-				rendered="#{inputWsdl.file != null}"
-				action="#{inputWsdl.executeSuite}" ajax="false" />
-			<p:button rendered="#{inputWsdl.rootReport != null}" target="_blank" href="#{inputWsdl.rootReport}"
-				value="Resultados" />
 			<p:commandButton rendered="#{inputWsdl.file != null}"
 				value="Descargar Fuente generado" ajax="false"
 				onclick="PrimeFaces.monitorDownload(start, stop);"
 				icon="ui-icon-arrowthick-1-s">
 				<p:fileDownload value="#{inputWsdl.file}" />
 			</p:commandButton>
+			<p:separator />
+			<p:commandButton value="Ejecutar Suite Test"
+					rendered="#{inputWsdl.file != null}"
+					action="#{inputWsdl.executeSuite}" ajax="false" />
+			<p:button rendered="#{inputWsdl.rootReport != null}" target="_blank"
+					href="#{inputWsdl.rootReport}" value="Resultados" />
+
+			
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -12,6 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tomcat.location>C:\enviroment\Apache Software Foundation\Apache Tomcat 7.0.22\webapps</tomcat.location>
 	</properties>
 
 	<dependencies>
@@ -182,6 +183,15 @@
 						<contextPath>/showcase</contextPath>
 					</webAppConfig>
 					<scanIntervalSeconds>5</scanIntervalSeconds>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<warName>${name}</warName>
+					<outputDirectory>${tomcat.location}</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
