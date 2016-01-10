@@ -17,10 +17,15 @@
 		</script>
 	</ui:define>
 	<ui:define name="title">
-        InputText
+        Secuencia de uso de las acciones disponibles:
     </ui:define>
 	<ui:define name="description">
-        Wsdl del servicio web al que se le desea realizar la generación automatica de test.
+       <p:outputPanel deferred="true">
+        <p>1. Introducir la url de la wsdl.</p>
+        <p>2. Analizar el wsdl.</p>
+        <p>3. Generar Suite Test.</p>
+        <p>3. Ejecutar Suite Test.</p>
+    </p:outputPanel>
     </ui:define>
 	<ui:define name="implementation">
 		<p:dialog modal="true" widgetVar="statusDialog" header="Status"
@@ -49,10 +54,10 @@
 
 			<p:separator />
 
-			<p:commandButton value="Analizar wsdl" action="#{inputWsdl.loadWsdl}"
+			<p:commandButton value="1. Analizar wsdl" action="#{inputWsdl.loadWsdl}"
 				ajax="false" />
 			<p:commandButton disabled="#{inputWsdl.folderName == null}"
-				value="Generar Suite Test" action="#{inputWsdl.generateSuite}"
+				value="2. Generar Suite Test" action="#{inputWsdl.generateSuite}"
 				ajax="false" />
 			<p:commandButton rendered="#{inputWsdl.file != null}"
 				value="Descargar Fuente generado" ajax="false"
@@ -61,13 +66,15 @@
 				<p:fileDownload value="#{inputWsdl.file}" />
 			</p:commandButton>
 			<p:separator />
-			<p:commandButton value="Ejecutar Suite Test"
-					rendered="#{inputWsdl.file != null}"
-					action="#{inputWsdl.executeSuite}" ajax="false" />
+			<p:commandButton value="3. Ejecutar Suite Test"
+				rendered="#{inputWsdl.file != null}"
+				action="#{inputWsdl.executeSuite}" ajax="false" />
 			<p:button rendered="#{inputWsdl.rootReport != null}" target="_blank"
-					href="#{inputWsdl.rootReport}" value="Resultados" />
+				href="#{inputWsdl.rootReport}" value="Resultados (+)" />
+			<p:button rendered="#{inputWsdl.logs != null}" target="_blank"
+				href="#{inputWsdl.logs}" value="Log's (+)" />
+			<p:separator />
 
-			
 		</h:form>
 	</ui:define>
 </ui:composition>

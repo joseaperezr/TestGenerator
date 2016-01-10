@@ -2,6 +2,7 @@ package es.infinitysoft.generator.test.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
@@ -56,6 +57,12 @@ public class InputWsdlView {
 	private String folderName = null;
 	
 	private String rootReport = null;
+	
+	private String logs = null;
+	
+	private StringBuilder outPutExecute = new StringBuilder();
+	
+	private boolean renderOutPutExecute = false;
 	
 	
 
@@ -201,11 +208,16 @@ public class InputWsdlView {
 					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
 			//String folderName = "/" + UUID.randomUUID().toString();
 			
-            ServiceExecuteTestSuite.getInstance().executeMvnCleanInstall(rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED);
+            outPutExecute = ServiceExecuteTestSuite.getInstance().executeMvnCleanInstall(rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED);
+            renderOutPutExecute =  true;
+            
+            FileUtil.getInstance().saveFile(outPutExecute, rootFolder + folderName + "/log.log");
+            //FileUtil.getInstance().copyDirectory(rootFolder + folderName + "/log.log", "/xampp/htdocs/" + folderName + "/log.log");
             
             FileUtil.getInstance().copyDirectory(rootFolder + folderName, "/xampp/htdocs/" + folderName);
             
             this.rootReport = "http://127.0.0.1" +  folderName + StaticResources.ROOT_TEST_SUITE_GENERATED + "target/site/TestSuite.html"; 
+            this.logs = "http://127.0.0.1" +  folderName +"/log.log";
 			
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -231,5 +243,54 @@ public class InputWsdlView {
 		FacesMessage msg = new FacesMessage(message);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
+	
+	public String handleCommand(String command, String[] params) {
+		return outPutExecute.toString();
+	}
 
+	/**
+	 * @return the outPutExecute
+	 */
+	public StringBuilder getOutPutExecute() {
+		return outPutExecute;
+	}
+
+	/**
+	 * @param outPutExecute the outPutExecute to set
+	 */
+	public void setOutPutExecute(StringBuilder outPutExecute) {
+		this.outPutExecute = outPutExecute;
+	}
+
+	/**
+	 * @return the renderOutPutExecute
+	 */
+	public boolean isRenderOutPutExecute() {
+		return renderOutPutExecute;
+	}
+
+	/**
+	 * @param renderOutPutExecute the renderOutPutExecute to set
+	 */
+	public void setRenderOutPutExecute(boolean renderOutPutExecute) {
+		this.renderOutPutExecute = renderOutPutExecute;
+	}
+
+	/**
+	 * @return the log
+	 */
+	public String getLogs() {
+		return logs;
+	}
+
+	/**
+	 * @param log the log to set
+	 */
+	public void setLogs(String log) {
+		this.logs = logs;
+	}
+	
+	
+
+	
 }

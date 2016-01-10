@@ -1,9 +1,11 @@
 package es.infinitysoft.generator.test.applicationService;
 
-import java.io.*;
+import java.io.P*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import es.infinitysoft.generator.test.StaticResources;
 
 public class ServiceExecuteTestSuite {
 
@@ -25,14 +27,15 @@ public class ServiceExecuteTestSuite {
 		return instance;
 	}
 
-	public void executeMvnCleanInstall(String root) {
+	public StringBuilder executeMvnCleanInstall(String root) {
 
 		String s = null;
-
+		StringBuilder output = new StringBuilder();
 		try {
 
 			// Determinar en qué SO estamos
 			String so = System.getProperty("os.name");
+			
 
 			String comando;
 
@@ -59,19 +62,25 @@ public class ServiceExecuteTestSuite {
 			log.info("Ésta es la salida standard del comando:\n");
 			while ((s = stdInput.readLine()) != null) {
 				log.info(s);
+				output.append(s);
+				output.append(StaticResources.SALTO_LINEA);
 			}
 
 			// Leemos los errores si los hubiera
 			log.info("Ésta es la salida standard de error del comando (si la hay):\n");
 			while ((s = stdError.readLine()) != null) {
 				log.info(s);
+				output.append(s);
+				output.append(StaticResources.SALTO_LINEA);
 			}
+			
 
 			//System.exit(0);
 		} catch (IOException e) {
 			log.error("Excepción: " + e.getMessage());
 			// System.exit(-1);
 		}
+		return output;
 	}
 
 }
