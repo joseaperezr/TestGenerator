@@ -16,17 +16,15 @@
 			//]]>
 		</script>
 	</ui:define>
-	<ui:define name="title">
-        Secuencia de uso de las acciones disponibles:
-    </ui:define>
+
 	<ui:define name="description">
-       <p:outputPanel deferred="true">
-        <p>1. Introducir la url de la wsdl.</p>
-        <p>2. Analizar el wsdl.</p>
-        <p>3. Generar Suite Test.</p>
-        <p>3. Ejecutar Suite Test.</p>
-    </p:outputPanel>
-    </ui:define>
+        	<h:form id="message" >
+			<p:commandButton value=" [info] Secuencia de ejecución" actionListener="#{inputWsdl.info}" />
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+		</h:form>
+	</ui:define>
+
 	<ui:define name="implementation">
 		<p:dialog modal="true" widgetVar="statusDialog" header="Status"
 			draggable="false" closable="false" resizable="false">
@@ -54,25 +52,25 @@
 
 			<p:separator />
 
-			<p:commandButton value="1. Analizar wsdl" action="#{inputWsdl.loadWsdl}"
-				ajax="false" />
+			<p:commandButton value="1. Analizar wsdl"
+				action="#{inputWsdl.loadWsdl}" ajax="false" />
 			<p:commandButton disabled="#{inputWsdl.folderName == null}"
 				value="2. Generar Suite Test" action="#{inputWsdl.generateSuite}"
 				ajax="false" />
+			<p:commandButton value="3. Ejecutar Suite Test"
+				rendered="#{inputWsdl.file != null}"
+				action="#{inputWsdl.executeSuite}" ajax="false" />
+			<p:separator />
 			<p:commandButton rendered="#{inputWsdl.file != null}"
 				value="Descargar Fuente generado" ajax="false"
 				onclick="PrimeFaces.monitorDownload(start, stop);"
 				icon="ui-icon-arrowthick-1-s">
 				<p:fileDownload value="#{inputWsdl.file}" />
 			</p:commandButton>
-			<p:separator />
-			<p:commandButton value="3. Ejecutar Suite Test"
-				rendered="#{inputWsdl.file != null}"
-				action="#{inputWsdl.executeSuite}" ajax="false" />
 			<p:button rendered="#{inputWsdl.rootReport != null}" target="_blank"
-				href="#{inputWsdl.rootReport}" value="Resultados (+)" />
+				href="#{inputWsdl.rootReport}" value="Resultados de Ejecución (+)" />
 			<p:button rendered="#{inputWsdl.logs != null}" target="_blank"
-				href="#{inputWsdl.logs}" value="Log's (+)" />
+				href="#{inputWsdl.logs}" value="Log's de Compilación (+)" />
 			<p:separator />
 
 		</h:form>

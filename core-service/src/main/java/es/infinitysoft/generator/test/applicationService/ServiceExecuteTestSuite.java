@@ -1,6 +1,6 @@
 package es.infinitysoft.generator.test.applicationService;
 
-import java.io.P*;
+import java.io.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

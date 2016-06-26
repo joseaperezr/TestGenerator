@@ -162,17 +162,14 @@ public class ServiceTestSuiteGenerator {
 							StaticResources.MARK_START_CLIENTS_CODE)) {
 						for (Method method : service.methods) {
 							out("Método: " + method.name);
-							if (/*
-								 * method.name.equals("createContact") ||
-								 */method.name.equals("getContactsCount")
-							/*
-							 * || method.name.equals("insImportControll") ||
-							 * method.name.equals("getAllTypesContact") ||
-							 * method.name.equals("updImportControll") ||
-							 * method.name .equals("updContactKronosToDisable")
-							 * || method.name
-							 * .equals("updContactKronosToDisableByImportName")
-							 */) {
+							if ( //method.name.equals("createContact") ||
+								 method.name.equals("getContactsCount")
+							  || method.name.equals("insImportControll") 
+							  || method.name.equals("getAllTypesContact") ||
+							  //method.name.equals("updImportControll") ||
+							  method.name .equals("updContactKronosToDisable")
+							 || method.name.equals("updContactKronosToDisableByImportName")
+							 ) {
 								contenido.append(generatorTestMethod(method));
 							}
 						}

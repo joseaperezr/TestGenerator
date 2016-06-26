@@ -53,18 +53,18 @@ public class InputWsdlView {
 	private TreeNode root;
 
 	private Document selectedDocument;
-	
+
 	private String folderName = null;
-	
+
 	private String rootReport = null;
-	
+
 	private String logs = null;
-	
+
 	private StringBuilder outPutExecute = new StringBuilder();
-	
+
 	private boolean renderOutPutExecute = false;
-	
-	
+
+	public static final String SALTO_LINEA = "\n";
 
 	@ManagedProperty("#{methodService}")
 	private MethodService service;
@@ -98,10 +98,6 @@ public class InputWsdlView {
 	public StreamedContent getFile() {
 		return file;
 	}
-	
-	
-	
-	
 
 	/**
 	 * @return the rootReport
@@ -111,7 +107,8 @@ public class InputWsdlView {
 	}
 
 	/**
-	 * @param rootReport the rootReport to set
+	 * @param rootReport
+	 *            the rootReport to set
 	 */
 	public void setRootReport(String rootReport) {
 		this.rootReport = rootReport;
@@ -125,7 +122,8 @@ public class InputWsdlView {
 	}
 
 	/**
-	 * @param folderName the folderName to set
+	 * @param folderName
+	 *            the folderName to set
 	 */
 	public void setFolderName(String folderName) {
 		this.folderName = folderName;
@@ -149,7 +147,7 @@ public class InputWsdlView {
 			// Load data into datatree
 			root = this.service.createDocuments(service);
 			log.info("Salida: " + folderName);
-			
+
 			message("Análisis terminado con éxito.");
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -165,8 +163,8 @@ public class InputWsdlView {
 			// Get root folder's
 			String rootFolder = Config.getInstance().getString(
 					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
-			if (folderName == null || folderName.equals("")){
-			   folderName = "/" + UUID.randomUUID().toString();
+			if (folderName == null || folderName.equals("")) {
+				folderName = "/" + UUID.randomUUID().toString();
 			}
 			ServiceClientGenerator.getInstance().createClientByWsdl(wsdl,
 					rootFolder, rootFolder + folderName);
@@ -195,8 +193,7 @@ public class InputWsdlView {
 			log.error(e.getMessage());
 		}
 	}
-	
-	
+
 	/**
 	 * 
 	 */
@@ -206,19 +203,28 @@ public class InputWsdlView {
 			// Get root folder's
 			String rootFolder = Config.getInstance().getString(
 					StaticResources.KEY_ROOT_TEST_SUITE_OUTPUT);
-			//String folderName = "/" + UUID.randomUUID().toString();
-			
-            outPutExecute = ServiceExecuteTestSuite.getInstance().executeMvnCleanInstall(rootFolder + folderName + StaticResources.ROOT_TEST_SUITE_GENERATED);
-            renderOutPutExecute =  true;
-            
-            FileUtil.getInstance().saveFile(outPutExecute, rootFolder + folderName + "/log.log");
-            //FileUtil.getInstance().copyDirectory(rootFolder + folderName + "/log.log", "/xampp/htdocs/" + folderName + "/log.log");
-            
-            FileUtil.getInstance().copyDirectory(rootFolder + folderName, "/xampp/htdocs/" + folderName);
-            
-            this.rootReport = "http://127.0.0.1" +  folderName + StaticResources.ROOT_TEST_SUITE_GENERATED + "target/site/TestSuite.html"; 
-            this.logs = "http://127.0.0.1" +  folderName +"/log.log";
-			
+			// String folderName = "/" + UUID.randomUUID().toString();
+
+			outPutExecute = ServiceExecuteTestSuite
+					.getInstance()
+					.executeMvnCleanInstall(
+							rootFolder + folderName
+									+ StaticResources.ROOT_TEST_SUITE_GENERATED);
+			renderOutPutExecute = true;
+
+			FileUtil.getInstance().saveFile(outPutExecute,
+					rootFolder + folderName + "/log.log");
+			// FileUtil.getInstance().copyDirectory(rootFolder + folderName +
+			// "/log.log", "/xampp/htdocs/" + folderName + "/log.log");
+
+			FileUtil.getInstance().copyDirectory(rootFolder + folderName,
+					"/xampp/htdocs/" + folderName);
+
+			this.rootReport = "http://127.0.0.1" + folderName
+					+ StaticResources.ROOT_TEST_SUITE_GENERATED
+					+ "target/site/TestSuite.html";
+			this.logs = "http://127.0.0.1" + folderName + "/log.log";
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -243,7 +249,7 @@ public class InputWsdlView {
 		FacesMessage msg = new FacesMessage(message);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	public String handleCommand(String command, String[] params) {
 		return outPutExecute.toString();
 	}
@@ -256,7 +262,8 @@ public class InputWsdlView {
 	}
 
 	/**
-	 * @param outPutExecute the outPutExecute to set
+	 * @param outPutExecute
+	 *            the outPutExecute to set
 	 */
 	public void setOutPutExecute(StringBuilder outPutExecute) {
 		this.outPutExecute = outPutExecute;
@@ -270,7 +277,8 @@ public class InputWsdlView {
 	}
 
 	/**
-	 * @param renderOutPutExecute the renderOutPutExecute to set
+	 * @param renderOutPutExecute
+	 *            the renderOutPutExecute to set
 	 */
 	public void setRenderOutPutExecute(boolean renderOutPutExecute) {
 		this.renderOutPutExecute = renderOutPutExecute;
@@ -284,13 +292,22 @@ public class InputWsdlView {
 	}
 
 	/**
-	 * @param log the log to set
+	 * @param log
+	 *            the log to set
 	 */
 	public void setLogs(String log) {
 		this.logs = logs;
 	}
-	
-	
 
-	
+	public void info() {
+		StringBuffer message = new StringBuffer();
+		message.append("1. Analizar el wsdl." + StaticResources.SALTO_LINEA);
+		message.append("2. Generar Suite Test." + StaticResources.SALTO_LINEA);
+		message.append("3. Ejecutar Suite Test." + StaticResources.SALTO_LINEA);
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info: ", message
+						.toString()));
+	}
+
 }
